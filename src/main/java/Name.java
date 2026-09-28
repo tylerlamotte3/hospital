@@ -1,5 +1,3 @@
-package edu.frederick.cmsc230;
-
 public class Name {
     private String first;
     private String last;
@@ -14,8 +12,7 @@ public class Name {
     }
 
     public boolean match(Name other) {
-        return first.equalsIgnoreCase(other.first)
-                && last.equalsIgnoreCase(other.last);
+        return first.equalsIgnoreCase(other.first) && last.equalsIgnoreCase(other.last);
     }
 
     public boolean isLessThan(Name other) {

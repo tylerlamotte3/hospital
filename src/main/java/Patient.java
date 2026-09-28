@@ -1,5 +1,3 @@
-package edu.frederick.cmsc230;
-
 public class Patient {
     private PatientIdentity identity;
 

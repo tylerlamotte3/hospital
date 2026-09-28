@@ -1,5 +1,3 @@
-package edu.frederick.cmsc230;
-
 import java.util.Date;
 
 public class PatientIdentity {
@@ -17,7 +15,9 @@ public class PatientIdentity {
     }
 
     public boolean isLessThan(PatientIdentity identity) {
-        if (!name.match(identity.name)) {
+        if (name.match(identity.name)) {
+            //
+        } else {
             return name.isLessThan(identity.name);
         }
 

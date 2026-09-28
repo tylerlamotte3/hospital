@@ -16,8 +16,7 @@ public class PatientList {
 
         int position = 0;
 
-        while (position < size
-                && patients[position].getIdentity().isLessThan(patient.getIdentity())) {
+        while (position < size && patients[position].getIdentity().isLessThan(patient.getIdentity())) {
             position++;
         }
 

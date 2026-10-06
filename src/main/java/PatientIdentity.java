@@ -1,3 +1,5 @@
+package src.main.java;
+
 import java.util.Date;
 
 public class PatientIdentity {
@@ -9,23 +11,38 @@ public class PatientIdentity {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public Name getName() {
+        return name;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
     public boolean match(PatientIdentity other) {
         return name.match(other.name)
                 && dateOfBirth.equals(other.dateOfBirth);
     }
 
-    public boolean isLessThan(PatientIdentity identity) {
-        if (name.match(identity.name)) {
-            //
-        } else {
-            return name.isLessThan(identity.name);
+    public boolean isLessThan(PatientIdentity other) {
+        if (name.isLessThan(other.name)) {
+            return true;
         }
 
-        return dateOfBirth.compareTo(identity.dateOfBirth) < 0;
+        if (name.match(other.name)) {
+            return dateOfBirth.compareTo(other.dateOfBirth) < 0;
+        }
+
+        return false;
     }
 
-    
     public String patientToString() {
         return name.nameToString() + ", " + dateOfBirth.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "name: " + name.toString()
+                + " dob: " + dateOfBirth.toString();
     }
 }

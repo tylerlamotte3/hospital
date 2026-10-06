@@ -1,3 +1,5 @@
+package src.main.java;
+
 public class Name {
     private String first;
     private String last;
@@ -12,11 +14,13 @@ public class Name {
     }
 
     public boolean match(Name other) {
-        return first.equalsIgnoreCase(other.first) && last.equalsIgnoreCase(other.last);
+        return first.equalsIgnoreCase(other.first)
+                && last.equalsIgnoreCase(other.last);
     }
 
     public boolean isLessThan(Name other) {
-        int lastComparison = last.toLowerCase().compareTo(other.last.toLowerCase());
+        int lastComparison =
+                last.toLowerCase().compareTo(other.last.toLowerCase());
 
         if (lastComparison < 0) {
             return true;
@@ -29,8 +33,15 @@ public class Name {
         return first.toLowerCase().compareTo(other.first.toLowerCase()) < 0;
     }
 
-    
     public String nameToString() {
         return fullname();
+    }
+
+    public String getFirst() {
+        return first;
+    }
+
+    public String getLast() {
+        return last;
     }
 }

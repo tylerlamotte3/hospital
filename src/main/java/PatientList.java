@@ -1,3 +1,10 @@
+package src.main.java;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
 public class PatientList {
     private static final int MAX_PATIENTS = 1000;
 
@@ -16,7 +23,9 @@ public class PatientList {
 
         int position = 0;
 
-        while (position < size && patients[position].getIdentity().isLessThan(patient.getIdentity())) {
+        while (position < size
+                && patients[position].getIdentity()
+                .isLessThan(patient.getIdentity())) {
             position++;
         }
 
@@ -40,7 +49,9 @@ public class PatientList {
 
         while (low <= high) {
             int middle = (low + high) / 2;
-            PatientIdentity middleIdentity = patients[middle].getIdentity();
+
+            PatientIdentity middleIdentity =
+                    patients[middle].getIdentity();
 
             if (middleIdentity.match(identity)) {
                 return patients[middle];
@@ -58,6 +69,129 @@ public class PatientList {
 
     public int size() {
         return size;
+    }
+
+    
+    public boolean saveToFile(String filename) {
+        try {
+            FileWriter writer = new FileWriter(filename);
+
+            Iterator iterator = new Iterator();
+            Patient patient;
+
+            while ((patient = iterator.next()) != null) {
+                writer.write(patient.toCSV());
+                writer.write("\n");
+            }
+
+            writer.close();
+            return true;
+
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    
+    public boolean importFromFile(String filename) {
+        try {
+            File file = new File(filename);
+            Scanner scanner = new Scanner(file);
+
+            
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+
+                Patient patient = Patient.makePatient(line);
+
+                if (patient != null) {
+                    if (size < MAX_PATIENTS) {
+                        patients[size] = patient;
+                        size++;
+                    }
+                }
+            }
+
+            scanner.close();
+
+            
+            mergeSort(patients, 0, size - 1);
+
+            return true;
+
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    
+    private void mergeSort(Patient[] array, int low, int high) {
+        if (low >= high) {
+            return;
+        }
+
+        int middle = (low + high) / 2;
+
+        mergeSort(array, low, middle);
+        mergeSort(array, middle + 1, high);
+
+        merge(array, low, middle, high);
+    }
+
+    //Merge two already-sorted portions of the array.
+    private void merge(
+            Patient[] array,
+            int low,
+            int middle,
+            int high) {
+
+        int leftSize = middle - low + 1;
+        int rightSize = high - middle;
+
+        Patient[] left = new Patient[leftSize];
+        Patient[] right = new Patient[rightSize];
+
+        for (int i = 0; i < leftSize; i++) {
+            left[i] = array[low + i];
+        }
+
+        for (int i = 0; i < rightSize; i++) {
+            right[i] = array[middle + 1 + i];
+        }
+
+        int leftIndex = 0;
+        int rightIndex = 0;
+        int arrayIndex = low;
+
+        while (leftIndex < leftSize
+                && rightIndex < rightSize) {
+
+            if (left[leftIndex].getIdentity()
+                    .isLessThan(right[rightIndex].getIdentity())) {
+
+                array[arrayIndex] = left[leftIndex];
+                leftIndex++;
+
+            } else {
+
+                array[arrayIndex] = right[rightIndex];
+                rightIndex++;
+            }
+
+            arrayIndex++;
+        }
+
+        while (leftIndex < leftSize) {
+            array[arrayIndex] = left[leftIndex];
+            leftIndex++;
+            arrayIndex++;
+        }
+
+        while (rightIndex < rightSize) {
+            array[arrayIndex] = right[rightIndex];
+            rightIndex++;
+            arrayIndex++;
+        }
     }
 
     public class Iterator {
